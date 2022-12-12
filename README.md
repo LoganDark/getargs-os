@@ -3,7 +3,7 @@
 Adds a newtype wrapper (`OsArgument`) around `OsStr` that allows it to be parsed
 by `getargs::Options`.
 
-In combination with the `argv`(https://docs.rs/argv) crate, this allows for
+In combination with the [`argv`](https://docs.rs/argv) crate, this allows for
 lowest-cost argument parsing across all platforms (zero-cost on Linux).
 
 This is a separate crate from `getargs` because it requires (wildly) unsafe
