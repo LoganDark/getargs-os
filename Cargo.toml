@@ -1,9 +1,22 @@
 [package]
 name = 'getargs-os'
 version = '0.1.0'
+authors = [
+	'LoganDark <contact@logandark.mozmail.com>',
+	'Cuteness! <contact@logandark.mozmail.com>' # We think cuteness contributed code here
+]
 edition = '2021'
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+rust-version = '1.56'
+description = 'Provides a way for `getargs` to parse OS strings'
+documentation = 'https://docs.rs/getargs-os'
+readme = './README.md'
+homepage = 'https://github.com/LoganDark/getargs-os'
+repository = 'https://github.com/LoganDark/getargs-os'
+license = 'MIT'
+license-file = './LICENSE.md'
+keywords = ['getargs', 'argv', 'arg', 'argument', 'parser']
+categories = ['command-line-interface', 'rust-patterns']
+exclude = ['.idea']
 
 [dependencies]
 getargs = '~0.5.0'
