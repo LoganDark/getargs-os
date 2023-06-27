@@ -36,3 +36,13 @@ while let Some(arg) = opts.next_arg().expect("some ooga booga just happened") {
 	}
 }
 ```
+
+### `os_str_bytes` feature
+
+To unlock `From<&str>` and `PartialEq<&str>` impls for `&OsArgument`, you must
+enable the unstable `os_str_bytes` feature, which depends on Nightly. This is
+because earlier versions of Rust didn't provide guarantees that OS strings are a
+superset of UTF-8 (even though `getargs-os` relied on this anyway in the past).
+Since the feature now exists, I don't want to make `getargs-os` unconditionally
+require Nightly, but new features relying on this guarantee will be gated behind
+the `os_str_bytes` feature until it is stabilized.
