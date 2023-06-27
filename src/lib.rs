@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "os_str_bytes", feature(os_str_bytes))]
+
 #![allow(clippy::tabs_in_doc_comments)] // what a stupid fucking lint
 
 //! Adds a newtype wrapper ([`OsArgument`]) around [`OsStr`] that allows it to
@@ -45,6 +47,16 @@
 //! # }
 //! ```
 //!
+//! ### `os_str_bytes` feature
+//!
+//! To unlock `From<&str>` and `PartialEq<&str>` impls for `&OsArgument`, you
+//! must enable the unstable `os_str_bytes` feature, which depends on Nightly.
+//! This is because earlier versions of Rust didn't provide guarantees that OS
+//! strings are a superset of UTF-8 (even though `getargs-os` relied on this
+//! anyway in the past). Since the feature now exists, I don't want to make
+//! `getargs-os` unconditionally require Nightly, but new features relying on
+//! this guarantee will be gated behind the `os_str_bytes` feature until it is
+//! stabilized.
 
 use std::ffi::OsStr;
 use std::fmt::{Debug, Formatter};
@@ -76,6 +88,13 @@ impl<'a> From<&'a OsArgument> for &'a OsStr {
 	fn from(from: &'a OsArgument) -> Self {
 		// SAFETY: `OsArgument` is `repr(transparent)`
 		unsafe { std::mem::transmute(from) }
+	}
+}
+
+#[cfg(feature = "os_str_bytes")]
+impl From<&str> for &OsArgument {
+	fn from(from: &str) -> Self {
+		Self::from(unsafe { OsStr::from_os_str_bytes_unchecked(from.as_bytes()) })
 	}
 }
 
@@ -115,6 +134,20 @@ impl DerefMut for OsArgument {
 
 impl PartialEq for OsArgument {
 	fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
+}
+
+#[cfg(feature = "os_str_bytes")]
+impl PartialEq<&str> for &OsArgument {
+	fn eq(&self, other: &str) -> bool {
+		self == other.into()
+	}
+}
+
+#[cfg(feature = "os_str_bytes")]
+impl PartialEq<&OsArgument> for &str {
+	fn eq(&self, other: &OsArgument) -> bool {
+		self.into() == other
+	}
 }
 
 impl Eq for OsArgument {}

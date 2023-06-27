@@ -1,6 +1,6 @@
 [package]
 name = 'getargs-os'
-version = '0.1.0'
+version = '0.1.1'
 authors = [
 	'LoganDark <contact@logandark.mozmail.com>',
 	'Cuteness! <contact@logandark.mozmail.com>' # We think cuteness contributed code here
@@ -13,10 +13,12 @@ readme = './README.md'
 homepage = 'https://github.com/LoganDark/getargs-os'
 repository = 'https://github.com/LoganDark/getargs-os'
 license = 'MIT'
-license-file = './LICENSE.md'
 keywords = ['getargs', 'argv', 'arg', 'argument', 'parser']
 categories = ['command-line-interface', 'rust-patterns']
 exclude = ['.idea']
+
+[features]
+os_str_bytes = []
 
 [dependencies]
 getargs = '~0.5.0'
